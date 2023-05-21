@@ -1,6 +1,7 @@
 package com.lactectos.registroEmpleado.infraestructure.security;
 
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,6 +9,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 
 @Order(1)
@@ -16,14 +22,15 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // @formatter:off
         http
+                .cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/auth/login").permitAll() // Esto permitirá el acceso sin autenticación al endpoint de login
-                .anyRequest().authenticated() // Esto asegura que todas las demás solicitudes requieran autenticación
+                .antMatchers("/api/auth").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .oauth2ResourceServer()
                 .jwt()
@@ -34,6 +41,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return NimbusJwtDecoder
                 .withJwkSetUri("https://www.googleapis.com/oauth2/v3/certs")
                 .build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 }
