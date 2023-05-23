@@ -8,6 +8,7 @@ class RegistroUserApplicationTests {
 
 	@Test
 	void contextLoads() {
+		//se debe mantener el contexto de la prueba en esta ocasiòn
 	}
 
 }

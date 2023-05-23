@@ -8,6 +8,7 @@ class RegistroEmpleadoApplicationTests {
 
 	@Test
 	void contextLoads() {
+		//solo generamos contexto, no habilitado
 	}
 
 }

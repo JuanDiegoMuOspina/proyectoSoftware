@@ -6,16 +6,7 @@ public class TokenUserResponse {
     private boolean isCreated;
 
     public TokenUserResponse() {
-    }
-
-    public TokenUserResponse(String nombre, String correo, boolean isCreated) {
-        this.nombre = nombre;
-        this.correo = correo;
-        this.isCreated = isCreated;
-    }
-
-    public String getNombre() {
-        return nombre;
+        //solo instancia el objeto nada mas
     }
 
     public void setNombre(String nombre) {
